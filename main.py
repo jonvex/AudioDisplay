@@ -20,7 +20,7 @@ while (True):
             print("*****System Mute Off*****")
     if oldvolume != volume:
         if mute:
-            print("m " + volume)
+            print("m " + str(volume))
         else:
             print(volume)
     stream = os.popen("minidsp -o json")
