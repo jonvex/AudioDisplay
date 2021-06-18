@@ -10,7 +10,7 @@ while (True):
     volume = mdspdata["master"]["volume"]
     if oldvolume != volume:
         print(volume)
-    stream.write("minidsp -o json")
+    stream = os.popen("minidsp -o json")
     time.sleep(0.25)
     
 
