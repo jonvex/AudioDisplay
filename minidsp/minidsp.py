@@ -10,7 +10,7 @@ class Minidsp:
         self.time = 0
         self.mute = ""
         self.volume = ""
-        self.source = source
+        self.source = ""
         self.__update()
 
     def __update(self):
