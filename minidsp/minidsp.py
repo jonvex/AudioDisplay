@@ -16,7 +16,6 @@ class Minidsp:
     def __update(self):
         newtime = time.time_ns()
         if (newtime - self.__time) > (1e9 * UPDATE_RATE):
-            print("acutally updated")
             stream = os.popen("minidsp -o json")
             mdspdata = json.loads(stream.read())
             self.__volume = mdspdata["master"]["volume"]
