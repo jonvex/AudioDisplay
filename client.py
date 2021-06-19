@@ -34,6 +34,7 @@ while (True):
             print("*****System Mute On*****")
         else:
             print("*****System Mute Off*****")
+    r.setVolume(volume)
     if oldvolume != volume:
         r.setVolume(volume)
         print(volume)
