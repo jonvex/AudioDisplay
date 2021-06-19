@@ -2,7 +2,7 @@ import os
 import time
 import json
 
-UPDATE_RATE = 0.25
+UPDATE_RATE = 1
 
 class Minidsp:
 
