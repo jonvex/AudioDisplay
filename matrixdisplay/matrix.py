@@ -22,4 +22,4 @@ class Render:
     def setVolume(self,volume):
         matrix = RGBMatrix(options=self.options)
         canvas = matrix.CreateFrameCanvas()
-        graphics.DrawText(canvas, self.font, 0, 0, graphics.Color(255, 0, 0), volume)
+        graphics.DrawText(canvas, self.font, 0, 0, graphics.Color(255, 0, 0), str(volume))

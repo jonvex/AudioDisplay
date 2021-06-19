@@ -2,7 +2,7 @@ import http.client
 import json
 import time
 import subprocess
-from matrixdisplay.main import Render
+from matrixdisplay.matrix import Render
 
 from rgbmatrix import graphics, RGBMatrix, RGBMatrixOptions
 
