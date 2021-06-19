@@ -23,3 +23,7 @@ class Render:
         matrix = RGBMatrix(options=self.options)
         canvas = matrix.CreateFrameCanvas()
         graphics.DrawText(canvas, self.font, 0, 0, graphics.Color(255, 0, 0), str(volume))
+
+r = Render()
+while (True):
+    r.setVolume(20)
