@@ -10,7 +10,7 @@ class Render:
         self.options.rows = 32
         self.options.cols = 64
         self.options.drop_privileges = False
-        options.disable_hardware_pulsing = True
+        self.options.disable_hardware_pulsing = True
 
         self.path = '/home/pi/audio-display/matrixdisplay'
 
