@@ -10,6 +10,7 @@ class Render:
         self.options.rows = 32
         self.options.cols = 64
         self.options.drop_privileges = False
+        options.disable_hardware_pulsing = True
 
         self.path = '/home/pi/audio-display/matrixdisplay'
 
@@ -18,11 +19,13 @@ class Render:
         self.font2 = graphics.Font()
         self.font2.LoadFont("/home/pi/rpi-rgb-led-matrix/fonts/4x6.bdf")
 
+        self.matrix = RGBMatrix(options=self.options)
+
 
     def setVolume(self,volume):
-        matrix = RGBMatrix(options=self.options)
-        canvas = matrix.CreateFrameCanvas()
+        canvas = self.matrix.CreateFrameCanvas()
         canvas.SetPixel(0,0,255,0,0)
+        canvas.SetPixel(10,10,255,255,0)
         #graphics.DrawText(canvas, self.font, 0, 0, graphics.Color(255, 0, 0), str(volume))
 
 
