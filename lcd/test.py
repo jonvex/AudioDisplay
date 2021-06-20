@@ -22,17 +22,16 @@ mylcd = I2C_LCD_driver.lcd()
 #     line = input("Enter Line Number: ")
 #     for i in range (0)
 #     for line in lines:
-       
-# str_pad = " " * 20
-# my_long_string = "Hi Mom!" * 10
-# while True:
-#     for i in range(0,len(my_long_string)):
-#         lcd_text = my_long_string[i:(i+20)]
-#         mylcd.lcd_display_string(lcd_text,1)
-#         time.sleep(0.4)
-#         mylcd.lcd_display_string(str_pad,1)
+mylcd.backlight(1)
+numstr = "Number:"
+numstr = numstr.rjust(16)
+emptyln = " " * 20
+for i in range(100)
+    mylcd.lcd_display_string(numstr + str(i).rjust(4),1)
+    time.sleep(0.25)
+    mylcd.lcd_display_string(numstr,1)
 
-
+time.sleep(2)
 mylcd.lcd_clear()
 mylcd.lcd_display_string("Goodbye!!!",2,6)
 time.sleep(2)
