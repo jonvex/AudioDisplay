@@ -18,7 +18,7 @@ mylcd.backlight(1)
 numstr = "Number:"
 numstr = numstr.rjust(17)
 emptyln = " " * 20
-while True
+while True:
     for i in range(100):
         mylcd.lcd_display_string(numstr + str(i).rjust(3),1)
         time.sleep(HOLD_TIME)
