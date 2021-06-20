@@ -24,7 +24,7 @@ while True:
     for i in range(100):
         mylcd.lcd_display_string(numstr + str(i).rjust(3),1)
         time.sleep(HOLD_TIME)
-        mylcd.lcd_display_string(numstr,1)
+        mylcd.lcd_display_string(ostr,1)
         time.sleep(CLEAR_TIME)
 
 
