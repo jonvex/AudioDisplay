@@ -12,7 +12,7 @@ def exit_handler():
     mylcd.lcd_clear()
     mylcd.backlight(0)
 
-atexit.Register(exit_handler)
+atexit.register(exit_handler)
 
 mylcd.backlight(1)
 numstr = "Number:"
