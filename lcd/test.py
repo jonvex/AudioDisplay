@@ -12,19 +12,28 @@ def exit_handler():
     mylcd.lcd_clear()
     mylcd.backlight(0)
 
+def changestr(old,new):
+    if old == new:
+        return old
+    else:
+        return " "
+
+
 atexit.register(exit_handler)
 
 mylcd.backlight(1)
 numstr = "Number:"
 numstr = numstr.rjust(17)
-ostr = numstr + "   "
+oldstr = ""
+newstr = ""
 
-emptyln = " " * 20
 while True:
     for i in range(100):
-        mylcd.lcd_display_string(numstr + str(i).rjust(3),1)
+        oldstr = newstr
+        newstr = numstr + str(i).rjust(3)
+        mylcd.lcd_display_string(newstr,1)
         time.sleep(HOLD_TIME)
-        mylcd.lcd_display_string(ostr,1)
+        mylcd.lcd_display_string(map(changestr,oldstr,newstr),1)
         time.sleep(CLEAR_TIME)
 
 
