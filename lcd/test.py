@@ -17,6 +17,8 @@ atexit.register(exit_handler)
 mylcd.backlight(1)
 numstr = "Number:"
 numstr = numstr.rjust(17)
+ostr = numstr + "   "
+
 emptyln = " " * 20
 while True:
     for i in range(100):
