@@ -48,6 +48,8 @@ while True:
         oldstr = newstr
         newstr = numstr + str(i).rjust(3)
         mylcd.lcd_display_string(newstr,1)
+        mylcd.lcd_write(0x80 + 0x54)
+        mylcd.lcd_write_char(i)
         time.sleep(HOLD_TIME)
         mylcd.lcd_display_string(map(changestr,oldstr,newstr),1)
         time.sleep(CLEAR_TIME)

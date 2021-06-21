@@ -24,10 +24,22 @@ class lcd:
 	          0b01011,
 	          0b11011,
 	          0b11000],
+
+            #speaker symbol
+            [ 0b00001,
+	          0b00011,
+	          0b01111,
+	          0b01111,
+	          0b01111,
+	          0b00011,
+	          0b00001,
+	          0b00000 ],
+
+              
         ]
         this.__lcd.lcd_load_custom_chars(customCC)
 
-        
+
         
 
 
