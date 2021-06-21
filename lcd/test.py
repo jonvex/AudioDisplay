@@ -2,7 +2,7 @@ import I2C_LCD_driver
 import time
 import atexit
 
-HOLD_TIME = 0.25
+HOLD_TIME = 1
 CLEAR_TIME = 0.1
 
 mylcd = I2C_LCD_driver.lcd()
@@ -44,7 +44,7 @@ mylcd.lcd_write(0x80 + 0x54)
 mylcd.lcd_write_char(0)
 
 while True:
-    for i in range(100):
+    for i in range(256):
         oldstr = newstr
         newstr = numstr + str(i).rjust(3)
         mylcd.lcd_display_string(newstr,1)
