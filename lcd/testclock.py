@@ -14,5 +14,5 @@ atexit.register(exit_handler)
 
 c.refresh_day()
 while True:
-    c.refresh_time(6)
+    c.refresh_time(4)
     time.sleep(0.1)
