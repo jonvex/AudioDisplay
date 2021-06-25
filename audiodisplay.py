@@ -1,5 +1,5 @@
-from lcd.I2C_LCD_driver import lcd
 from lcd.clock import clock
+from lcd.I2C_LCD_driver import lcd
 import threading
 import atexit
 
