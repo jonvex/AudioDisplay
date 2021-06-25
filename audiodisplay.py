@@ -30,7 +30,7 @@ class audiodisplay:
         self.__lock.acquire()
         self.__running = True
         while self.__running:
-            if self.__amp == AMP_OFF self.__active != CLOCK_A:
+            if self.__amp == AMP_OFF and self.__active != CLOCK_A:
                 self.__clock = clock(self.__lcd)
                 self.__clock.start()
                 self.__active = CLOCK_A
