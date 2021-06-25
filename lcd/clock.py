@@ -94,10 +94,10 @@ class clock:
             #Dot 6
             [0b00000,
 	        0b00000,
-            0b01110,
-            0b01110,
-            0b01110,
             0b00000,
+            0b01110,
+            0b01110,
+            0b01110,
             0b00000,
             0b00000],
               
@@ -114,9 +114,9 @@ class clock:
         self.write_dot(5 + position)
         self.write_num(now.minute // 10, 6 + position)
         self.write_num(now.minute % 10, 9 + position)
-        self.write_dot(11)
-        self.write_num(now.second // 10, 12 + position)
-        self.write_num(now.second % 10, 15 + position)
+        # self.write_dot(11)
+        # self.write_num(now.second // 10, 12 + position)
+        # self.write_num(now.second % 10, 15 + position)
 
     def write_num(self,number,position):
         for i,cc in enumerate(numbers[number]):
