@@ -1,7 +1,6 @@
 import I2C_LCD_driver
 import datetime
 
-tz_NY = pytz.timezone('America/New_York')
 TOP_RIGHT_CC = 0
 TOP_CC = 1
 LEFT_BAR_CC = 2
