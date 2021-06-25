@@ -116,7 +116,7 @@ class clock(threading.Thread):
 
     def stop(self):
         with self.__lock:
-            self.__running = false
+            self.__running = False
 
 
     def __refresh_time(self,position=0):
