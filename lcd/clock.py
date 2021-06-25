@@ -1,6 +1,8 @@
 import I2C_LCD_driver
 import datetime
+import pytz
 
+tz_NY = pytz.timezone('America/New_York')
 TOP_RIGHT_CC = 0
 TOP_CC = 1
 LEFT_BAR_CC = 2
@@ -105,7 +107,7 @@ class clock:
         self.__lcd.lcd_load_custom_chars(customCC)
         self.__lcd.backlight(0)
     def refresh_time(self,position=0):
-        now = datetime.datetime.now()
+        now = datetime.datetime.now(tz_NY)
         if now.hour > 9:
             self.write_num(now.hour // 10, 0 + position)
         else:
