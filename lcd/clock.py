@@ -1,7 +1,5 @@
 import I2C_LCD_driver
-import time
-
-TIMEZONE_OFFSET = -5
+from datetime import datetime
 TOP_RIGHT_CC = 0
 TOP_CC = 1
 LEFT_BAR_CC = 2
@@ -112,16 +110,16 @@ class clock:
         self.__lcd.backlight(0)
 
     def refresh_time(self,position=0):
-        now = time.localtime()
-        hour = (now.tm_hour + TIMEZONE_OFFSET) % 24
-        if hour > 9:
-            self.write_num(hour // 10, 0 + position)
+        now = datetime.now()
+        
+        if now.hour > 9:
+            self.write_num(now.hour // 10, 0 + position)
         else:
             self.write_num(10,0 + position)
-        self.write_num(hour % 10, 3 + position)
+        self.write_num(now.hour % 10, 3 + position)
         self.write_dot(5 + position)
-        self.write_num(now.tm_min // 10, 6 + position)
-        self.write_num(now.tm_min % 10, 9 + position)
+        self.write_num(now.minute // 10, 6 + position)
+        self.write_num(now.minute % 10, 9 + position)
         # self.write_dot(11)
         # self.write_num(now.second // 10, 12 + position)
         # self.write_num(now.second % 10, 15 + position)

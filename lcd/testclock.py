@@ -6,7 +6,7 @@ import atexit
 c = clock.clock()
 
 def exit_handler():
-    time.sleep(2)
+    time.sleep(0.5)
     c.clear()
 
 atexit.register(exit_handler)
