@@ -105,13 +105,14 @@ class clock(threading.Thread):
     
     def run(self):
         self.__load_cc()
-        self.__lock.acquire(blocking=True)
+        self.__lock.acquire()
         self.__running = True
         self.__refresh_day()
         while self.__running:
             self.__refresh_time(4)
             self.__lock.release()
             time.sleep(0.1)
+            self.__lock.acquire()
         self.__lcd.lcd_clear()
 
     def stop(self):
