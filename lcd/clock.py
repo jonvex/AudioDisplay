@@ -1,7 +1,7 @@
 import I2C_LCD_driver
 import time
 
-TIMEZONE_OFFSET = -7
+TIMEZONE_OFFSET = -8
 TOP_RIGHT_CC = 0
 TOP_CC = 1
 LEFT_BAR_CC = 2
