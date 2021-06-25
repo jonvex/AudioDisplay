@@ -1,9 +1,5 @@
 import I2C_LCD_driver
-from datetime import datetime, timedelta
-from pytz import timezone
-import pytz
-
-eastern = timezone('US/Eastern')
+import time
 
 
 TOP_RIGHT_CC = 0
@@ -109,16 +105,21 @@ class clock:
         ]
         self.__lcd.lcd_load_custom_chars(customCC)
         self.__lcd.backlight(0)
+    
+    def clear(self):
+        self.__lcd.clear()
+        self.__lcd.backlight(0)
+
     def refresh_time(self,position=0):
-        now = eastern.localize(datetime.now())
-        if now.hour > 9:
-            self.write_num(now.hour // 10, 0 + position)
+        year, month, day, hour, minute = map(int, time.strftime("%Y %m %d %H %M").split())
+        if hour > 9:
+            self.write_num(hour // 10, 0 + position)
         else:
             self.write_num(10,0 + position)
-        self.write_num(now.hour % 10, 3 + position)
+        self.write_num(hour % 10, 3 + position)
         self.write_dot(5 + position)
-        self.write_num(now.minute // 10, 6 + position)
-        self.write_num(now.minute % 10, 9 + position)
+        self.write_num(minute // 10, 6 + position)
+        self.write_num(minute % 10, 9 + position)
         # self.write_dot(11)
         # self.write_num(now.second // 10, 12 + position)
         # self.write_num(now.second % 10, 15 + position)
