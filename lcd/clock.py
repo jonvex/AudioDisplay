@@ -105,7 +105,7 @@ class clock:
         self.__lcd.lcd_load_custom_chars(customCC)
         self.__lcd.backlight(0)
     def refresh_time(self,position=0):
-        now = datetime.datetime.now(datetime.timezone.utc).astimezone()
+        now = datetime.datetime.now().astimezone()
         if now.hour > 9:
             self.write_num(now.hour // 10, 0 + position)
         else:
