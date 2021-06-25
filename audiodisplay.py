@@ -2,6 +2,7 @@ from lcd.clock import clock
 from lcd.I2C_LCD_driver import lcd
 import threading
 import atexit
+import time
 
 #display activities
 START_A = 0
@@ -35,6 +36,7 @@ class audiodisplay:
                 self.__clock.start()
                 self.__active = CLOCK_A
             self.__lock.release()
+            time.sleep(0.01)
             self.__lock.acquire()
     
     def stop(self):
