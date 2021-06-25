@@ -1,4 +1,4 @@
-import I2C_LCD_driver
+from lcd.I2C_LCD_driver import I2C_LCD_driver
 from lcd.clock import clock
 import threading
 import atexit
