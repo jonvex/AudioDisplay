@@ -107,7 +107,7 @@ class clock:
         self.__lcd.backlight(0)
     
     def clear(self):
-        self.__lcd.clear()
+        self.__lcd.lcd_clear()
         self.__lcd.backlight(0)
 
     def refresh_time(self,position=0):
