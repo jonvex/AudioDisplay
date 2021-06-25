@@ -1,4 +1,4 @@
-import I2C_LCD_driver
+import lcd.I2C_LCD_driver
 from datetime import datetime
 import threading
 
