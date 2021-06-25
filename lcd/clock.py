@@ -99,23 +99,23 @@ class clock(threading.Thread):
         threading.Thread.__init__(self, daemon=True)
          #init lcd and turn off backlight
         self.__lcd = lcd
-        self.__jbvlock = threading.Lock()
+        self.__lock = threading.Lock()
         self.__running = False
         self.__newday = True
     
     def run(self):
         self.__load_cc()
-        self.__jbvlock.acquire()
+        self.__lock.acquire(blocking=True)
         self.__running = True
         self.__refresh_day()
         while self.__running:
             self.__refresh_time(4)
-            self.__jbvlock.release()
+            self.__lock.release()
             time.sleep(0.1)
         self.__lcd.lcd_clear()
 
     def stop(self):
-        with self.__jbvlock:
+        with self.__lock:
             self.__running = False
 
 
