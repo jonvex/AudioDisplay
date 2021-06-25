@@ -113,7 +113,7 @@ class clock(threading.Thread):
             time.sleep(0.1)
         self.__lcd.lcd_clear()
 
-    def stop(self)
+    def stop(self):
         with self.__lock:
             self.__running = false
 
