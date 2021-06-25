@@ -9,8 +9,8 @@ import atexit
 class lcd:
     def __init__(self):
         #init lcd and turn off backlight
-        this.__lcd = I2C_LCD_driver.lcd()
-        this.__lcd.backlight(0)
+        self.__lcd = I2C_LCD_driver.lcd()
+        self.__lcd.backlight(0)
 
         #load custom characters
         customCC = [      
@@ -37,7 +37,7 @@ class lcd:
 
               
         ]
-        this.__lcd.lcd_load_custom_chars(customCC)
+        self.__lcd.lcd_load_custom_chars(customCC)
 
 
         
