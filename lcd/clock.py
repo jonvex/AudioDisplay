@@ -1,6 +1,7 @@
 import lcd.I2C_LCD_driver
 from datetime import datetime
 import threading
+import time
 
 
 #custom character enums
