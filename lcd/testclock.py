@@ -1,9 +1,10 @@
+import I2C_LCD_driver
 import clock
 import time
 import atexit
 
 
-c = clock.clock()
+c = clock.clock(I2C_LCD_driver.lcd())
 
 def exit_handler():
     time.sleep(0.5)

@@ -1,14 +1,85 @@
 import I2C_LCD_driver
 from datetime import datetime
+import threading
+
+
+#custom character enums
 TOP_RIGHT_CC = 0
 TOP_CC = 1
 LEFT_BAR_CC = 2
 RIGHT_BAR_CC = 3
 RIGHT_L_CC = 4
 LEFT_L_CC = 5
-EMPTY_CC = 128
 DOT_CC = 6
+EMPTY_CC = 128
 
+#custom character bytes
+top_right_cc = [0b00111,
+	            0b00111,
+	            0b00111,
+                0b00000,
+                0b00000,
+                0b00000,
+                0b00000,
+                0b00000]
+
+top_cc = [  0b11111,
+            0b11111,
+            0b11111,
+            0b00000,
+            0b00000,
+            0b00000,
+            0b00000,
+            0b00000]
+
+left_bar_cc = [ 0b11100,
+                0b11100,
+                0b11100,
+                0b11100,
+                0b11100,
+                0b11100,
+                0b11100,
+                0b11100]
+
+right_bar_cc = [0b00111,
+                0b00111,
+                0b00111,
+                0b00111,
+                0b00111,
+                0b00111,
+                0b00111,
+                0b00111]
+
+right_l_cc = [  0b11111,
+                0b11111,
+                0b11111,
+                0b00111,
+                0b00111,
+                0b00111,
+                0b00111,
+                0b00111]
+
+left_l_cc =  [  0b11111,
+                0b11111,
+                0b11111,
+                0b11100,
+                0b11100,
+                0b11100,
+                0b11100,
+                0b11100]
+
+dot_cc = [  0b00000,
+	        0b00000,
+            0b00000,
+            0b01110,
+            0b01110,
+            0b01110,
+            0b00000,
+            0b00000]
+
+customCC = [top_right_cc, top_cc, left_bar_cc, right_bar_cc, right_l_cc, left_l_cc, dot_cc]
+
+#numbers made from custom characters
 numbers = [EMPTY_CC, EMPTY_CC, EMPTY_CC, EMPTY_CC, EMPTY_CC, EMPTY_CC] * 11
 numbers[0] = [LEFT_L_CC, RIGHT_L_CC, LEFT_BAR_CC, RIGHT_BAR_CC, TOP_CC, TOP_CC]
 numbers[1] = [TOP_RIGHT_CC, LEFT_BAR_CC, EMPTY_CC, LEFT_BAR_CC, TOP_RIGHT_CC, TOP_CC]
@@ -22,118 +93,64 @@ numbers[8] = [LEFT_L_CC, RIGHT_L_CC, LEFT_L_CC, RIGHT_L_CC, TOP_CC, TOP_CC]
 numbers[9] = [LEFT_L_CC, RIGHT_L_CC, TOP_CC, RIGHT_L_CC, EMPTY_CC, TOP_RIGHT_CC]
 numbers[10] = [EMPTY_CC, EMPTY_CC, EMPTY_CC, EMPTY_CC, EMPTY_CC, EMPTY_CC]
 
-class clock:
-    def __init__(self):
+class clock(threading.Thread):
+    def __init__(self, lcd):
+        threading.Thread.__init__(self, daemon=True)
          #init lcd and turn off backlight
-        self.__lcd = I2C_LCD_driver.lcd()
-        self.__lcd.backlight(0)
-
-        #load custom characters
-        customCC = [      
-
-            #Top right 0 
-            [ 0b00111,
-	        0b00111,
-	        0b00111,
-	        0b00000,
-	        0b00000,
-	        0b00000,
-	        0b00000,
-	        0b00000],
-
-            #Top 1
-            [ 0b11111,
-	        0b11111,
-	        0b11111,
-	        0b00000,
-	        0b00000,
-	        0b00000,
-	        0b00000,
-	        0b00000],
-
-            #Left bar 2
-            [  0b11100,
-            0b11100,
-            0b11100,
-            0b11100,
-            0b11100,
-            0b11100,
-            0b11100,
-            0b11100],
-
-            #Right bar 3
-            [  0b00111,
-            0b00111,
-            0b00111,
-            0b00111,
-            0b00111,
-            0b00111,
-            0b00111,
-            0b00111],
-
-            #Right L 4
-            [  0b11111,
-            0b11111,
-            0b11111,
-            0b00111,
-            0b00111,
-            0b00111,
-            0b00111,
-            0b00111],
-
-            #Left L 5
-            [  0b11111,
-            0b11111,
-            0b11111,
-            0b11100,
-            0b11100,
-            0b11100,
-            0b11100,
-            0b11100],
-
-            #Dot 6
-            [0b00000,
-	        0b00000,
-            0b00000,
-            0b01110,
-            0b01110,
-            0b01110,
-            0b00000,
-            0b00000],
-              
-        ]
-        self.__lcd.lcd_load_custom_chars(customCC)
-        self.__lcd.backlight(0)
+        self.__lcd = lcd
+        self.__lock = threading.Lock()
+        self.__running = False
+        self.__newday = True
     
-    def clear(self):
+    def run(self):
+        self.__load_cc()
+        self.__lock.acquire()
+        self.__running = True
+        self.__refresh_day()
+        while self.__running:
+            self.__refresh_time(4)
+            self.__lock.release()
+            time.sleep(0.1)
         self.__lcd.lcd_clear()
-        self.__lcd.backlight(0)
 
-    def refresh_time(self,position=0):
+    def stop(self)
+        with self.__lock:
+            self.__running = false
+
+
+    def __refresh_time(self,position=0):
         now = datetime.now()
+        if now.hour == 0 and now.minute == 0 and self.__newday:
+            self.__refresh_day()
+            self.__newday = False
+
+        if now.hour == 0 and now.minute == 1 and not self.__newday:
+            self.__newday = True
         
         if now.hour > 9:
-            self.write_num(now.hour // 10, 0 + position)
+            self.__write_num(now.hour // 10, 0 + position)
         else:
-            self.write_num(10,0 + position)
-        self.write_num(now.hour % 10, 3 + position)
-        self.write_dot(5 + position)
-        self.write_num(now.minute // 10, 6 + position)
-        self.write_num(now.minute % 10, 9 + position)
-        # self.write_dot(11)
-        # self.write_num(now.second // 10, 12 + position)
-        # self.write_num(now.second % 10, 15 + position)
+            self.__write_num(10,0 + position)
+        self.__write_num(now.hour % 10, 3 + position)
+        self.__write_dot(5 + position)
+        self.__write_num(now.minute // 10, 6 + position)
+        self.__write_num(now.minute % 10, 9 + position)
 
-    def refresh_day(self):
+
+    def __refresh_day(self):
         self.__lcd.lcd_display_string(datetime.now().strftime('%A %B %d %Y'), 1, 0)
 
-    def write_num(self,number,position):
+    def __write_num(self,number,position):
         for i,cc in enumerate(numbers[number]):
             self.__lcd.lcd_write_custom_char(cc,(i+4) // 2, (i % 2) + position)
 
-    def write_dot(self,position):
+    def __write_dot(self,position):
         self.__lcd.lcd_write_custom_char(DOT_CC, 2, position)
         self.__lcd.lcd_write_custom_char(DOT_CC, 3, position)
+
+    def __load_cc(self):
+        #load custom characters
+        self.__lcd.lcd_load_custom_chars(customCC)
 
 
 
