@@ -4,7 +4,7 @@ import json
 
 UPDATE_RATE = 1
 
-class Minidsp:
+class minidsp:
 
     def __init__(self):
         self.__time = 0
