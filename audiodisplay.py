@@ -1,4 +1,4 @@
-from lcd.I2C_LCD_driver import I2C_LCD_driver
+from lcd.I2C_LCD_driver import lcd
 from lcd.clock import clock
 import threading
 import atexit
@@ -17,7 +17,7 @@ AMP_STOP = 3
 
 class audiodisplay:
     def __init__(self):
-        self.__lcd = I2C_LCD_driver.lcd()
+        self.__lcd = lcd()
         self.__lcd.backlight(0)
         self.__active = START_A
         self.__amp = AMP_OFF
