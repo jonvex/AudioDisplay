@@ -124,6 +124,9 @@ class clock:
         # self.write_num(now.second // 10, 12 + position)
         # self.write_num(now.second % 10, 15 + position)
 
+    def refresh_day(self):
+        self.__lcd.lcd_display_string(datetime.now().strftime('%A %B %d %Y'), 1, 0)
+
     def write_num(self,number,position):
         for i,cc in enumerate(numbers[number]):
             self.__lcd.lcd_write_custom_char(cc,(i+4) // 2, (i % 2) + position)
