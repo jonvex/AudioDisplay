@@ -114,17 +114,17 @@ class clock:
         self.write_dot(5 + position)
         self.write_num(now.minute // 10, 6 + position)
         self.write_num(now.minute % 10, 9 + position)
-        self.write_dot(10)
-        self.write_num(now.second // 10, 11 + position)
-        self.write_num(now.second % 10, 14 + position)
+        self.write_dot(11)
+        self.write_num(now.second // 10, 12 + position)
+        self.write_num(now.second % 10, 15 + position)
 
     def write_num(self,number,position):
         for i,cc in enumerate(numbers[number]):
             self.__lcd.lcd_write_custom_char(cc,(i+4) // 2, (i % 2) + position)
 
     def write_dot(self,position):
+        self.__lcd.lcd_write_custom_char(DOT_CC, 2, position)
         self.__lcd.lcd_write_custom_char(DOT_CC, 3, position)
-        self.__lcd.lcd_write_custom_char(DOT_CC, 4, position)
 
 
 
