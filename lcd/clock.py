@@ -140,7 +140,7 @@ class clock(threading.Thread):
 
 
     def __refresh_day(self):
-        self.__lcd.lcd_display_string(datetime.now().strftime('%A %B %d %Y'), 1, 0)
+        self.__lcd.lcd_display_string(datetime.now().strftime('%A %b %d %Y'), 1, 0)
 
     def __write_num(self,number,position):
         for i,cc in enumerate(numbers[number]):
