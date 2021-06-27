@@ -201,7 +201,7 @@ class Audio(threading.Thread):
         self.__lock = threading.Lock()
         self.__running = False
         self.__data = self.__minidsp.data()
-        self.__display_data(self)
+        self.__display_data()
     
     def run(self):
         self.__lock.acquire()
