@@ -50,4 +50,5 @@ class AudioDisplay:
 
 a = AudioDisplay()
 atexit.register(AudioDisplay.stop,a)
+time.sleep(1)
 a.run()
