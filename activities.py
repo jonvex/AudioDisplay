@@ -1,8 +1,15 @@
-import lcd.I2C_LCD_driver
+from I2C_LCD_driver import LCD
 from datetime import datetime
 import threading
 import time
 
+
+#Activity Names
+CLOCK_A = "Clock"
+AUDIO_A = "Audio"
+
+
+CLOCK_SLEEP_TIME = 0.1
 
 #custom character enums
 TOP_RIGHT_CC = 0
@@ -94,10 +101,12 @@ numbers[8] = [LEFT_L_CC, RIGHT_L_CC, LEFT_L_CC, RIGHT_L_CC, TOP_CC, TOP_CC]
 numbers[9] = [LEFT_L_CC, RIGHT_L_CC, TOP_CC, RIGHT_L_CC, EMPTY_CC, TOP_RIGHT_CC]
 numbers[10] = [EMPTY_CC, EMPTY_CC, EMPTY_CC, EMPTY_CC, EMPTY_CC, EMPTY_CC]
 
-class clock(threading.Thread):
+
+
+class Clock(threading.Thread):
     def __init__(self, lcd):
         threading.Thread.__init__(self, daemon=True)
-         #init lcd and turn off backlight
+         
         self.__lcd = lcd
         self.__lock = threading.Lock()
         self.__running = False
@@ -111,13 +120,16 @@ class clock(threading.Thread):
         while self.__running:
             self.__refresh_time(4)
             self.__lock.release()
-            time.sleep(0.1)
+            time.sleep(CLOCK_SLEEP_TIME)
             self.__lock.acquire()
-        self.__lcd.lcd_clear()
+        self.__lcd.clear()
 
     def stop(self):
         with self.__lock:
             self.__running = False
+    
+    def activity(self):
+        return CLOCK_A
 
 
     def __refresh_time(self,position=0):
@@ -140,20 +152,106 @@ class clock(threading.Thread):
 
 
     def __refresh_day(self):
-        self.__lcd.lcd_display_string(datetime.now().strftime('%A %b %d %Y'), 1, 0)
+        self.__lcd.display_string(datetime.now().strftime('%A %b %d %Y'), 1, 0)
 
     def __write_num(self,number,position):
         for i,cc in enumerate(numbers[number]):
-            self.__lcd.lcd_write_custom_char(cc,(i+4) // 2, (i % 2) + position)
+            self.__lcd.write_custom_char(cc,(i+4) // 2, (i % 2) + position)
 
     def __write_dot(self,position):
-        self.__lcd.lcd_write_custom_char(DOT_CC, 2, position)
-        self.__lcd.lcd_write_custom_char(DOT_CC, 3, position)
+        self.__lcd.write_custom_char(DOT_CC, 2, position)
+        self.__lcd.write_custom_char(DOT_CC, 3, position)
 
     def __load_cc(self):
         #load custom characters
-        self.__lcd.lcd_load_custom_chars(customCC)
+        self.__lcd.load_custom_chars(customCC)
 
+speaker_top_cc = [  0b00001,
+                    0b00011,
+                    0b00111,
+                    0b01111,
+                    0b11111,
+                    0b11111,
+                    0b11111,
+                    0b11111]
 
+speaker_bottom_cc = [   0b11111,
+                        0b11111,
+                        0b11111,
+                        0b11111,
+                        0b01111,
+                        0b00111,
+                        0b00011,
+                        0b00001]
+full_black_cc = [   0b11111,
+                    0b11111,
+                    0b11111,
+                    0b11111,
+                    0b11111,
+                    0b11111,
+                    0b11111,
+                    0b11111]
+mute_cc = [speaker_top_cc, speaker_bottom_cc, full_black_cc]
 
+class Audio(threading.Thread):
+    def __init__(self, lcd, minidsp):
+        threading.Thread.__init__(self, daemon=True)
+        self.__lcd = lcd
+        self.__minidsp = minidsp
+        self.__lock = threading.Lock()
+        self.__running = False
+        self.__client = client
+        self.__data = self.__minidsp.data()
+        self.__display_data(self)
     
+    def run(self):
+        self.__lock.acquire()
+        self.__running = True
+        while self.__running:
+            data = self.__minidsp.data()
+            self.__lock.release()
+
+            self.__process_changes(data)
+            self.__display_data()
+            self.__lock.acquire()
+        self.__lcd.clear()
+
+    def stop(self):
+        with self.__lock:
+            self.__running = False
+    
+    def activity(self):
+        return AUDIO_A
+
+    def __process_changes(self, data):
+        if data["mute"] != self.__data["mute"]:
+            self.__display_mute_change(data["mute"])
+        elif data["source"] != self.__data["source"]:
+            self.__display_source_change(data["source"])
+        elif data["volume"] != self.__data["volume"]:
+            self.__display_volume_change(data["volume"])
+
+    def __display_mute_change(self, mute):
+        self.__lcd.clear()
+        self.__lcd.load_custom_chars(mute_cc)
+        self.__lcd.write_custom_char(0,2,8)
+        self.__lcd.write_custom_char(1,4,8)
+        self.__lcd.write_custom_char(2,3,8)
+        self.__lcd.write_custom_char(2,3,7)
+    
+    def __display_source_change(self, source):
+
+
+    def __display_volume_change(self, volume):
+        
+    def __display_data(self):
+        self.__lcd.load_custom_chars(customCC)
+        self.__lcd.display_string("Source: " + self.__data["source"] + " Mute: " str(self.__data["mute"]),1,0)
+        self.__write_num(self.__data[volume] // 10, 8)
+        self.__write_num(self.__data[volume] % 10, 11)
+
+    def __write_num(self,number,position):
+        self.__lcd.load_custom_chars(customCC)
+        for i,cc in enumerate(numbers[number]):
+            self.__lcd.write_custom_char(cc,(i+4) // 2, (i % 2) + position)
+        

@@ -1,40 +1,39 @@
-from lcd.clock import clock
-from lcd.I2C_LCD_driver import lcd
+import activities
+import minidsp
+import I2C_LCD_driver
 import threading
 import atexit
 import time
 
-#display activities
-START_A = 0
-CLOCK_A = 1
-END_A = 2
 
-#amp states
-AMP_OFF = 0
-AMP_ON = 1
-AMP_START = 2
-AMP_STOP = 3
-
-
-class audiodisplay:
+class AudioDisplay:
     def __init__(self):
-        self.__lcd = lcd()
+        self.__lcd = I2C_LCD_driver.LCD()
         self.__lcd.backlight(0)
-        self.__active = START_A
-        self.__amp = AMP_OFF
+        self.__activity = None
         self.__lock = threading.Lock()
         self.__running = False
-        self.__clock = None
+        self.__minidsp = minidsp.MiniDSP()
+        self.__minidsp.start()
         
     
     def run(self):
         self.__lock.acquire()
         self.__running = True
+        self.__activity = activities.Clock(self.__lcd)
+        self.__activity.start()
         while self.__running:
-            if self.__amp == AMP_OFF and self.__active != CLOCK_A:
-                self.__clock = clock(self.__lcd)
-                self.__clock.start()
-                self.__active = CLOCK_A
+            audioON = True
+            if self.__activity.activity() == activities.CLOCK_A:
+                if audioON:
+                    self.__activity.stop()
+                    self.__activity = activities.Audio(self.__lcd, self.__minidsp)
+                    self.__activity.start()
+            if self.__activity.activity() == activities.AUDIO_A:
+                if not audioON:
+                    self.__activity.stop()
+                    self.__activity = activities.Clock(self.__lcd)
+                    self.__activity.start()
             self.__lock.release()
             time.sleep(0.01)
             self.__lock.acquire()
@@ -49,6 +48,6 @@ class audiodisplay:
 
 
 
-a = audiodisplay()
-atexit.register(audiodisplay.stop,a)
+a = AudioDisplay()
+atexit.register(AudioDisplay.stop,a)
 a.run()
