@@ -40,9 +40,7 @@ class AudioDisplay:
     
     def stop(self):
         with self.__lock:
-            if self.__active == CLOCK_A:
-                self.__active = END_A
-                self.__clock.stop()
+            self.__activity.stop()
             self.__running = False
             self.__lcd.backlight(0)
 
