@@ -240,9 +240,10 @@ class Audio(threading.Thread):
         self.__lcd.write_custom_char(2,3,7)
     
     def __display_source_change(self, source):
-
+        return
 
     def __display_volume_change(self, volume):
+        return
         
     def __display_data(self):
         self.__lcd.load_custom_chars(customCC)
