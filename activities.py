@@ -247,7 +247,7 @@ class Audio(threading.Thread):
         
     def __display_data(self):
         self.__lcd.load_custom_chars(customCC)
-        self.__lcd.display_string("Source: " + self.__data["source"] + " Mute: " str(self.__data["mute"]),1,0)
+        self.__lcd.display_string("Source: " + self.__data["source"] + " Mute: " + str(self.__data["mute"]),1,0)
         self.__write_num(self.__data[volume] // 10, 8)
         self.__write_num(self.__data[volume] % 10, 11)
 
