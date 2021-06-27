@@ -200,7 +200,6 @@ class Audio(threading.Thread):
         self.__minidsp = minidsp
         self.__lock = threading.Lock()
         self.__running = False
-        self.__client = client
         self.__data = self.__minidsp.data()
         self.__display_data(self)
     
