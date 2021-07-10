@@ -25,21 +25,18 @@ class AudioDisplay:
         audioON = True
         while self.__running:
             if self.__activity.activity() == activities.CLOCK_A:
-                print( "28 plus" + self.__activity.activity())
                 if audioON:
                     self.__activity.stop()
                     time.sleep(0.01)
                     self.__activity = activities.Audio(self.__lcd, self.__minidsp)
                     self.__activity.start()
             if self.__activity.activity() == activities.AUDIO_A:
-                print("35 plus" + self.__activity.activity())
                 if not audioON:
-                    print("wtf why is this hitting")
                     self.__activity.stop()
                     self.__activity = activities.Clock(self.__lcd)
                     self.__activity.start()
             self.__lock.release()
-            time.sleep(0.01)
+            time.sleep(0.1)
             self.__lock.acquire()
     
     def stop(self):

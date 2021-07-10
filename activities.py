@@ -208,13 +208,14 @@ class Audio(threading.Thread):
     def run(self):
         self.__lock.acquire()
         self.__running = True
-        self.__lcd.load_custom_chars(customCC)
+        #self.__lcd.load_custom_chars(customCC)
         while self.__running:
             data = self.__minidsp.data()
             self.__lock.release()
 
             self.__process_changes(data)
             self.__display_data()
+            time.sleep(0.5)
             self.__lock.acquire()
         self.__lcd.clear()
 
