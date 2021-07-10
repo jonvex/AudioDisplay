@@ -254,12 +254,12 @@ class Audio(threading.Thread):
         return
         
     def __display_data(self):
-        #self.__lcd.display_string("Source: " + self.__data["source"] + " Mute: " + str(self.__data["mute"]),1,0)
+        self.__lcd.display_string("Source: " + self.__data["source"] + " Mute: " + str(self.__data["mute"]),1,0)
+        print("volume is " + str(self.__data["volume"]))
         self.__write_num(abs(math.floor(self.__data["volume"])) // 10, 8)
         self.__write_num(abs(math.floor(self.__data["volume"])) % 10, 11)
 
     def __write_num(self,number,position):
-        print("printing num "+ str(number))
         for i,cc in enumerate(numbers[number]):
             self.__lcd.write_custom_char(cc,(i+4) // 2, (i % 2) + position)
         
