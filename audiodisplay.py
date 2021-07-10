@@ -33,7 +33,7 @@ class AudioDisplay:
                     self.__activity.start()
             if self.__activity.activity() == activities.AUDIO_A:
                 print("35 plus" + self.__activity.activity())
-                if audioON:
+                if not audioON:
                     print("wtf why is this hitting")
                     self.__activity.stop()
                     self.__activity = activities.Clock(self.__lcd)
