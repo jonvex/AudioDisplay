@@ -254,11 +254,13 @@ class Audio(threading.Thread):
         return
         
     def __display_data(self):
-        print(self.__data["source"])
+
         if self.__data["source"] == "Toslink":
             source_string = "  TV "
-        elif self.__data["source"] == "USB":
+        elif self.__data["source"] == "Usb":
             source_string = "Music"
+        else:
+            source_string = "IDK??"
 
         if self.__data["mute"]: 
             mute_string = "mute"
