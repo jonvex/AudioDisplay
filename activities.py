@@ -258,7 +258,7 @@ class Audio(threading.Thread):
         self.__write_num(abs(math.floor(self.__data["volume"])) % 10, 11)
 
     def __write_num(self,number,position):
-        print("printing num "+ number)
+        print("printing num "+ str(number))
         for i,cc in enumerate(numbers[number]):
             self.__lcd.write_custom_char(cc,(i+4) // 2, (i % 2) + position)
         
