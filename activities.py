@@ -244,8 +244,9 @@ class Audio(threading.Thread):
         self.__lcd.write_custom_char(1,4,8)
         self.__lcd.write_custom_char(2,3,8)
         self.__lcd.write_custom_char(2,3,7)
-        time.sleep(1)
+        time.sleep(2)
         self.__lcd.clear()
+        self.__lcd.load_custom_chars(customCC)
     
     def __display_source_change(self, source):
         return
