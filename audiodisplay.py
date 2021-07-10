@@ -29,7 +29,7 @@ class AudioDisplay:
                     self.__activity.stop()
                     time.sleep(0.01)
                     self.__activity = activities.Audio(self.__lcd, self.__minidsp)
-                    self.__activity.start()
+                    #self.__activity.start()
             if self.__activity.activity() == activities.AUDIO_A:
                 if not audioON:
                     self.__activity.stop()
