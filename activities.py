@@ -228,15 +228,14 @@ class Audio(threading.Thread):
         return AUDIO_A
 
     def __process_changes(self, data):
-        self.__data = data
+        
         if data["mute"] != self.__data["mute"]:
             self.__display_mute_change(data["mute"])
         elif data["source"] != self.__data["source"]:
             self.__display_source_change(data["source"])
-        else:
-            return   
-        time.sleep(1)
-        self.__lcd.clear()
+ 
+        self.__data = data
+        
 
     def __display_mute_change(self, mute):
         self.__lcd.clear()
@@ -245,6 +244,8 @@ class Audio(threading.Thread):
         self.__lcd.write_custom_char(1,4,8)
         self.__lcd.write_custom_char(2,3,8)
         self.__lcd.write_custom_char(2,3,7)
+        time.sleep(1)
+        self.__lcd.clear()
     
     def __display_source_change(self, source):
         return
