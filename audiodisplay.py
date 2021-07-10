@@ -22,19 +22,25 @@ class AudioDisplay:
         self.__running = True
         self.__activity = activities.Clock(self.__lcd)
         self.__activity.start()
+        time.sleep(2)
+        self.__activity.stop()
+        time.sleep(2)
+        self.__lcd.clear()
+        time.sleep(2)
+        self.__activity = activities.Audio(self.__lcd,self.__minidsp)
         audioON = True
         while self.__running:
-            if self.__activity.activity() == activities.CLOCK_A:
-                if audioON:
-                    self.__activity.stop()
-                    time.sleep(0.01)
-                    self.__activity = activities.Audio(self.__lcd, self.__minidsp)
-                    #self.__activity.start()
-            if self.__activity.activity() == activities.AUDIO_A:
-                if not audioON:
-                    self.__activity.stop()
-                    self.__activity = activities.Clock(self.__lcd)
-                    self.__activity.start()
+            # if self.__activity.activity() == activities.CLOCK_A:
+            #     if audioON:
+            #         self.__activity.stop()
+            #         time.sleep(0.01)
+            #         self.__activity = activities.Audio(self.__lcd, self.__minidsp)
+            #         #self.__activity.start()
+            # if self.__activity.activity() == activities.AUDIO_A:
+            #     if not audioON:
+            #         self.__activity.stop()
+            #         self.__activity = activities.Clock(self.__lcd)
+            #         self.__activity.start()
             self.__lock.release()
             time.sleep(0.1)
             self.__lock.acquire()
