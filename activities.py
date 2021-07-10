@@ -254,8 +254,17 @@ class Audio(threading.Thread):
         return
         
     def __display_data(self):
-        self.__lcd.display_string("Source: " + self.__data["source"] + " Mute: " + str(self.__data["mute"]),1,0)
-        print("volume is " + str(self.__data["volume"]))
+        if self.__data["source"] == "toslink":
+            source_string = "  TV "
+        elif self.__data["source"] == "USB":
+            source_string = "Music"
+
+        if self.__data["mute"]: 
+            mute_string = "mute"
+        else:
+            mute_string = "    "
+        
+        self.__lcd.display_string(source_string + " ********* " + mute_string ,1,0)
         self.__write_num(abs(math.floor(self.__data["volume"])) // 10, 8)
         self.__write_num(abs(math.floor(self.__data["volume"])) % 10, 11)
 
