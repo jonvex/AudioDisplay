@@ -254,6 +254,7 @@ class Audio(threading.Thread):
         return
         
     def __display_data(self):
+        print(self.__data["source"])
         if self.__data["source"] == "toslink":
             source_string = "  TV "
         elif self.__data["source"] == "usb":
