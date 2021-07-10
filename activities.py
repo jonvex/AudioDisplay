@@ -197,7 +197,6 @@ mute_cc = [speaker_top_cc, speaker_bottom_cc, full_black_cc]
 class Audio(threading.Thread):
     def __init__(self, lcd, minidsp):
         threading.Thread.__init__(self, daemon=True)
-        print("why keep init")
         self.__lcd = lcd
         self.__minidsp = minidsp
         self.__lock = threading.Lock()
