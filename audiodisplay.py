@@ -22,7 +22,7 @@ class AudioDisplay:
         self.__running = True
         self.__activity = activities.Clock(self.__lcd)
         self.__activity.start()
-        audioON = False
+        audioON = True
         while self.__running:
             if self.__activity.activity() == activities.CLOCK_A:
                 if audioON:
