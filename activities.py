@@ -128,6 +128,7 @@ class Clock(threading.Thread):
     def stop(self):
         with self.__lock:
             self.__running = False
+        
     
     def activity(self):
         return CLOCK_A
