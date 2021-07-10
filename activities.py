@@ -238,15 +238,16 @@ class Audio(threading.Thread):
         
 
     def __display_mute_change(self, mute):
-        self.__lcd.clear()
-        self.__lcd.load_custom_chars(mute_cc)
-        self.__lcd.write_custom_char(0,2,8)
-        self.__lcd.write_custom_char(1,4,8)
-        self.__lcd.write_custom_char(2,3,8)
-        self.__lcd.write_custom_char(2,3,7)
-        time.sleep(2)
-        self.__lcd.clear()
-        self.__lcd.load_custom_chars(customCC)
+        if mute:
+            self.__lcd.clear()
+            self.__lcd.load_custom_chars(mute_cc)
+            self.__lcd.write_custom_char(0,2,8)
+            self.__lcd.write_custom_char(1,4,8)
+            self.__lcd.write_custom_char(2,3,8)
+            self.__lcd.write_custom_char(2,3,7)
+            time.sleep(2)
+            self.__lcd.clear()
+            self.__lcd.load_custom_chars(customCC)
     
     def __display_source_change(self, source):
         return
