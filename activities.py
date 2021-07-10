@@ -207,12 +207,12 @@ class Audio(threading.Thread):
     def run(self):
         self.__lock.acquire()
         self.__running = True
-        #self.__lcd.load_custom_chars(customCC)
+        self.__lcd.load_custom_chars(customCC)
         while self.__running:
             data = self.__minidsp.data()
             self.__lock.release()
 
-            self.__process_changes(data)
+            #self.__process_changes(data)
             self.__display_data()
             time.sleep(0.5)
             self.__lock.acquire()
@@ -227,7 +227,6 @@ class Audio(threading.Thread):
 
     def __process_changes(self, data):
         if data["mute"] != self.__data["mute"]:
-            print("mute changing why")
             self.__display_mute_change(data["mute"])
         elif data["source"] != self.__data["source"]:
             self.__display_source_change(data["source"])
@@ -251,7 +250,8 @@ class Audio(threading.Thread):
         return
         
     def __display_data(self):
-        self.__lcd.display_string("Source: " + self.__data["source"] + " Mute: " + str(self.__data["mute"]),1,0)
+        self.__lcd.clear()
+        #self.__lcd.display_string("Source: " + self.__data["source"] + " Mute: " + str(self.__data["mute"]),1,0)
         self.__write_num(abs(math.floor(self.__data["volume"])) // 10, 8)
         self.__write_num(abs(math.floor(self.__data["volume"])) % 10, 11)
 
