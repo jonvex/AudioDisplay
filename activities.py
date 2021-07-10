@@ -201,13 +201,15 @@ class Audio(threading.Thread):
         self.__minidsp = minidsp
         self.__lock = threading.Lock()
         self.__running = False
+        self.__lcd.clear()
+        time.sleep(0.01)
         self.__data = self.__minidsp.data()
         self.__display_data()
     
     def run(self):
         self.__lock.acquire()
         self.__running = True
-        #self.__lcd.load_custom_chars(customCC)
+        self.__lcd.load_custom_chars(customCC)
         while self.__running:
             data = self.__minidsp.data()
             self.__data = data
@@ -251,13 +253,12 @@ class Audio(threading.Thread):
         return
         
     def __display_data(self):
-        self.__lcd.clear()
-        time.sleep(0.01)
         #self.__lcd.display_string("Source: " + self.__data["source"] + " Mute: " + str(self.__data["mute"]),1,0)
         self.__write_num(abs(math.floor(self.__data["volume"])) // 10, 8)
         self.__write_num(abs(math.floor(self.__data["volume"])) % 10, 11)
 
     def __write_num(self,number,position):
+        print("printing num "+ number)
         for i,cc in enumerate(numbers[number]):
             self.__lcd.write_custom_char(cc,(i+4) // 2, (i % 2) + position)
         
