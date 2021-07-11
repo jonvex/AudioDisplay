@@ -32,7 +32,7 @@ activity.start()
 while True:
     with open(FIFO) as fifo:
         while True:
-            data = fifo.read()
+            data = str(fifo.read())
             if len(data) == 0:
                 break
             if data == VOLUME_UP_CMD:
@@ -56,7 +56,6 @@ while True:
                     activity.stop()
                     time.sleep(1)
                     activity = activities.Audio(lcd)
-
             else:
                 print("Unknown command" + data)
                 
