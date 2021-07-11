@@ -57,6 +57,8 @@ while True:
                     time.sleep(1)
                     activity = activities.Audio(lcd)
             else:
+                print(data)
+                print(POWER_ON_CMD)
                 print(data == POWER_ON_CMD)
                 print("Unknown command" + data)
                 
