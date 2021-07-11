@@ -1,6 +1,7 @@
 import os
 import time
 import errno
+import atexit
 import threading
 import activities
 import I2C_LCD_driver
@@ -28,6 +29,11 @@ lcd.backlight(0)
 activity = activities.Clock(lcd)
 activity.start()
 
+def exitfunc():
+    lcd.clear()
+    lcd.backlight(0)
+
+atexit.register(exitfunc)
 
 
 while True:
