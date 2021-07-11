@@ -20,6 +20,7 @@ SOURCE_TOSLINK_CMD = '2'
 SOURCE_USB_CMD = '3'
 POWER_ON_CMD =  '4'
 POWER_OFF_CMD = '5'
+MUTE_TOGGLE_CMD = '6'
 
 
 lcd = I2C_LCD_driver.LCD()
@@ -56,6 +57,9 @@ while True:
                     activity.stop()
                     time.sleep(1)
                     activity = activities.Audio(lcd)
+            elif data == MUTE_TOGGLE_CMD:
+                if activity.activity() == activities.AUDIO_A:
+                    activity.toggle_mute()
             else:
                 print(data)
                 print(POWER_ON_CMD)
