@@ -3,6 +3,7 @@ from datetime import datetime
 import threading
 import time
 import math
+import os
 
 
 #Activity Names
@@ -11,6 +12,8 @@ AUDIO_A = "Audio"
 
 
 CLOCK_SLEEP_TIME = 0.1
+TOSLINK_VAL = "Toslink"
+USB_VAL = "Usb"
 
 #custom character enums
 TOP_RIGHT_CC = 0
@@ -195,34 +198,59 @@ full_black_cc = [   0b11111,
                     0b11111]
 mute_cc = [speaker_top_cc, speaker_bottom_cc, full_black_cc]
 
-class Audio(threading.Thread):
-    def __init__(self, lcd, minidsp):
-        threading.Thread.__init__(self, daemon=True)
-        self.__lcd = lcd
-        self.__minidsp = minidsp
-        self.__lock = threading.Lock()
-        self.__running = False
-        self.__lcd.clear()
-        time.sleep(5)
-        self.__data = self.__minidsp.data()
-        self.__display_data()
-    
-    def run(self):
-        self.__lock.acquire()
-        self.__running = True
-        self.__lcd.load_custom_chars(customCC)
-        while self.__running:
-            data = self.__minidsp.data()
-            self.__lock.release()
-            self.__process_changes(data)
-            self.__display_data()
-            time.sleep(0.5)
-            self.__lock.acquire()
-        self.__lcd.clear()
 
-    def stop(self):
-        with self.__lock:
-            self.__running = False
+VOLUME_INCREMENT_VAL = 0.5
+
+
+class Audio:
+    def __init__(self, lcd):
+        self.__lcd = lcd
+        self.__lcd.clear()
+        time.sleep(1)
+        self.__lcd.load_custom_chars(customCC)
+        self.__volume = -30
+        self.__set_volume()
+        self.__mute = True
+        self.__set_mute()
+        self.__source = TOSLINK_VAL
+        self.__set_source()
+        self.__display_data()
+        
+    def __set_volume(self):
+        os.system("minidsp gain -- " + str(self.__volume))
+
+    def decrease_volume(self):
+       self.__volume = self.__volume - VOLUME_INCREMENT_VAL
+       self.__set_volume()
+       self.__display_data()
+    
+    def increase_volume(self):
+        self.__volume = self.__volume + VOLUME_INCREMENT_VAL
+        self.__set_volume()
+        self.__display_data()
+
+    def __set_source(self):
+        os.system("minidsp source " + self.__source)
+
+    def set_source(self, source):
+        if self.__source != source:
+            self.__source = source
+            self.__set_source()
+            self.__display_source_change()
+
+    def __set_mute(self):
+        if self.__mute:
+            os.system("minidsp mute on")
+        else:
+            os.system("minidsp mute off")
+
+    def set_mute(self, mute):
+        if self.__mute != mute:
+            self.__mute = mute
+            self.__set_mute()
+            self.__display_mute_change()
+    
+    
     
     def activity(self):
         return AUDIO_A
@@ -237,8 +265,8 @@ class Audio(threading.Thread):
         self.__data = data
         
 
-    def __display_mute_change(self, mute):
-        if mute:
+    def __display_mute_change(self):
+        if self.__mute:
             self.__lcd.clear()
             self.__lcd.load_custom_chars(mute_cc)
             self.__lcd.write_custom_char(0,2,8)
@@ -248,30 +276,29 @@ class Audio(threading.Thread):
             time.sleep(2)
             self.__lcd.clear()
             self.__lcd.load_custom_chars(customCC)
+            self.__display_data()
     
-    def __display_source_change(self, source):
+    def __display_source_change(self):
+        self.__display_data()
         return
 
-    def __display_volume_change(self, volume):
-        return
         
     def __display_data(self):
-
-        if self.__data["source"] == "Toslink":
+        if self.__source == TOSLINK_VAL:
             source_string = "  TV "
-        elif self.__data["source"] == "Usb":
+        elif self.__source == USB_VAL:
             source_string = "Music"
         else:
             source_string = "IDK??"
 
-        if self.__data["mute"]: 
+        if self.__mute: 
             mute_string = "mute"
         else:
             mute_string = "    "
         
         self.__lcd.display_string(source_string + " ********* " + mute_string ,1,0)
-        self.__write_num(abs(math.floor(self.__data["volume"])) // 10, 8)
-        self.__write_num(abs(math.floor(self.__data["volume"])) % 10, 11)
+        self.__write_num(abs(math.floor(self.__volume)) // 10, 8)
+        self.__write_num(abs(math.floor(self.__volume)) % 10, 11)
 
     def __write_num(self,number,position):
         for i,cc in enumerate(numbers[number]):
