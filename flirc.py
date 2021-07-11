@@ -32,7 +32,7 @@ activity.start()
 while True:
     with open(FIFO) as fifo:
         while True:
-            data = fifo.read().rstrip()
+            data = fifo.readline().rstrip()
             if len(data) == 0:
                 break
             if data == VOLUME_UP_CMD:
