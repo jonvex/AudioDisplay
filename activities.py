@@ -12,8 +12,8 @@ AUDIO_A = "Audio"
 
 
 CLOCK_SLEEP_TIME = 0.1
-TOSLINK_VAL = "Toslink"
-USB_VAL = "Usb"
+TOSLINK_VAL = "toslink"
+USB_VAL = "usb"
 
 #custom character enums
 TOP_RIGHT_CC = 0
@@ -255,14 +255,6 @@ class Audio:
     def activity(self):
         return AUDIO_A
 
-    def __process_changes(self, data):
-        
-        if data["mute"] != self.__data["mute"]:
-            self.__display_mute_change(data["mute"])
-        elif data["source"] != self.__data["source"]:
-            self.__display_source_change(data["source"])
- 
-        self.__data = data
         
 
     def __display_mute_change(self):
