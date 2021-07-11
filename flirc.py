@@ -14,12 +14,12 @@ except OSError as oe:
         raise
 
 #commands
-VOLUME_UP_CMD = '0'
-VOLUME_DOWN_CMD = '1'
-SOURCE_TOSLINK_CMD = '2'
-SOURCE_USB_CMD = '3'
-POWER_ON_CMD = '4'
-POWER_OFF_CMD = '5'
+VOLUME_UP_CMD = str('0')
+VOLUME_DOWN_CMD = str('1')
+SOURCE_TOSLINK_CMD = str('2')
+SOURCE_USB_CMD = str('3')
+POWER_ON_CMD = str('4')
+POWER_OFF_CMD = str('5')
 
 
 lcd = I2C_LCD_driver.LCD()
