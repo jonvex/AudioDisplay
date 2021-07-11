@@ -244,11 +244,10 @@ class Audio:
         else:
             os.system("minidsp mute off")
 
-    def set_mute(self, mute):
-        if self.__mute != mute:
-            self.__mute = mute
-            self.__set_mute()
-            self.__display_mute_change()
+    def toggle_mute(self):
+        self.__mute = not self.__mute
+        self.__set_mute()
+        self.__display_mute_change()
     
     
     
