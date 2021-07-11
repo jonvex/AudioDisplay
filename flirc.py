@@ -57,6 +57,7 @@ while True:
                     time.sleep(1)
                     activity = activities.Audio(lcd)
             else:
+                print(type(data))
                 print("Unknown command" + data)
                 
 
